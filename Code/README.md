@@ -4,7 +4,7 @@ Static landing page. Open `index.html` in a browser; no build step.
 
 ## Add your photographs
 
-Drop files into `assets/photos/` using these names (`.jpg` or `.webp`). They replace the drawn placeholders automatically:
+Placeholders: `assets/photos/`
 
 - `photo-hero` (portrait, 4:5), the polaroid in the first screen
 - `photo-01` (5:4), `photo-02` to `photo-05` (4:5), the work gallery
