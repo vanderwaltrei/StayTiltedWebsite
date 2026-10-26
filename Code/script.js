@@ -2,6 +2,7 @@
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js-ready'); /* tells the head script we loaded, so reveals stay armed */
 
   /* Footer year */
   var year = document.getElementById('year');
@@ -47,7 +48,7 @@
     var ticking = false;
     var update = function () {
       var p = Math.min(window.scrollY / (window.innerHeight * 0.7), 1);
-      hero.style.setProperty('--hero-tilt', (-5 * (1 - p)).toFixed(2) + 'deg');
+      hero.style.rotate = (-5 * (1 - p)).toFixed(2) + 'deg';
       ticking = false;
     };
     window.addEventListener('scroll', function () {
@@ -63,7 +64,7 @@
   if (range && frame && caption) {
     var setTilt = function () {
       var v = Number(range.value);
-      frame.style.setProperty('--tilt', v + 'deg');
+      frame.style.rotate = v + 'deg';
       caption.textContent = v === 0 ? 'Perfectly level. A bit dull, honestly.' : 'Tilted ' + Math.abs(v) + '°. Better.';
     };
     range.addEventListener('input', setTilt);
