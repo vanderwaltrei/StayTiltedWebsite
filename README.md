@@ -6,7 +6,7 @@ Static landing page. Open `index.html` in a browser; no build step.
 
 The photographer uploads images to a category folder in the private [`StayTiltedPhotoLibrary`](https://github.com/vanderwaltrei/StayTiltedPhotoLibrary) repository. A scheduled GitHub Action copies them to this site and publishes them to GitHub Pages, usually within 15 minutes. Photos displayed on this public website are public.
 
-Use `.jpg` or `.webp` files:
+Use browser-friendly image files: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.gif`, or `.bmp`. HEIC and TIFF photos need to be converted to one of these formats before upload.
 
 - Replace existing featured photos by keeping the same names: `photo-hero` (portrait), `photo-01` to `photo-05` (work gallery), and `photo-level` (square slider).
 - Add gallery photos inside a category folder, such as `photos/cosplay/zero-two.jpg`. The filename becomes the caption; the folder selects the category. Filters for Cosplay, Anime & Manga, Comic Con Africa, Halloween, Music Events, Portraits, and Other are available in the gallery. Empty categories show a short message until photos are uploaded.

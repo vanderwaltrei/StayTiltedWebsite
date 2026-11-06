@@ -79,12 +79,12 @@ jobs:
                   continue
               if not image.is_file():
                   raise SystemExit(f"Only put image files in a category folder inside photos/: {image}")
-              if image.suffix.casefold() not in {".jpg", ".webp"}:
-                  raise SystemExit(f"Unsupported image type (use .jpg or .webp): {image}")
+              if image.suffix.casefold() not in {".avif", ".webp", ".jpg", ".jpeg", ".png", ".gif", ".bmp"}:
+                  raise SystemExit(f"Unsupported image type (use AVIF, WebP, JPEG, PNG, GIF, or BMP): {image}")
               relative = image.relative_to(source)
               if len(relative.parts) > 2:
                   raise SystemExit(f"Use only one category folder inside photos/: {image}")
-              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*\.(jpg|webp)", image.name, re.IGNORECASE):
+              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
                   raise SystemExit(f"Use only letters, numbers, hyphens, and underscores in image names: {image.name}")
               if len(relative.parts) == 1 and image.stem.casefold() in fixed_slots:
                   continue
