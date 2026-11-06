@@ -241,7 +241,7 @@
           if (!photo || typeof photo.file !== 'string' || typeof photo.caption !== 'string' ||
               typeof photo.category !== 'string' || typeof photo.categoryLabel !== 'string' ||
               !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(photo.category) ||
-              !/^[A-Za-z0-9][A-Za-z0-9_-]*(?:\/[A-Za-z0-9][A-Za-z0-9_-]*)*\.(avif|webp|jpe?g|png|gif|bmp)$/i.test(photo.file)) {
+              !/^[A-Za-z0-9][A-Za-z0-9 _-]*(?:\/[A-Za-z0-9][A-Za-z0-9 _-]*)*\.(avif|webp|jpe?g|png|gif|bmp)$/i.test(photo.file)) {
             throw new Error('Photo manifest contains an invalid entry.');
           }
           if (existing[photo.file]) return;

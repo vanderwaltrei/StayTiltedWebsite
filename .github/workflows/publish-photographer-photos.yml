@@ -84,8 +84,8 @@ jobs:
               relative = image.relative_to(source)
               if len(relative.parts) > 2:
                   raise SystemExit(f"Use only one category folder inside photos/: {image}")
-              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
-                  raise SystemExit(f"Use only letters, numbers, hyphens, and underscores in image names: {image.name}")
+              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 _-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
+                  raise SystemExit(f"Use letters, numbers, spaces, hyphens, or underscores in image names: {image.name}")
               if len(relative.parts) == 1 and image.stem.casefold() in fixed_slots:
                   continue
 
