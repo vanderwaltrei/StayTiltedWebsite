@@ -108,8 +108,17 @@ h3 { font-size: clamp(1.5rem, 2.6vw, 2.25rem); }
 
 /* Gallery */
 .work { background: var(--ink); }
+.gallery-filters { display: flex; flex-wrap: wrap; gap: .65rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+.gallery-filter {
+  min-height: 2.75rem; padding: .55rem 1.1rem; border: 1px solid rgba(249, 249, 249, .55); border-radius: 999px;
+  background: transparent; color: var(--paper); font: 700 .95rem var(--font-display); cursor: pointer;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.gallery-filter:hover, .gallery-filter[aria-pressed="true"] { border-color: var(--red); background: var(--red); color: var(--paper); }
+.gallery-filter:focus-visible { outline-color: var(--paper); }
 .gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 3vw, 2.5rem); align-items: end; }
 .shot { rotate: var(--r, 0deg); transition: rotate .7s var(--spring), opacity .7s var(--ease), translate .7s var(--ease); transition-delay: 0s, calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms); }
+.shot[hidden] { display: none; }
 .shot:hover, .shot:focus-within { rotate: 0deg; }
 .shot figcaption { padding-top: .8rem; font-weight: 600; color: rgba(249, 249, 249, .88); }
 .g-a { grid-column: 1 / span 7; }

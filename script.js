@@ -94,7 +94,24 @@
 
   /* Additional gallery photos are listed in the manifest published from the photo library. */
   var gallery = document.querySelector('.gallery');
-  if (gallery && window.location.protocol !== 'file:') {
+  var filters = document.querySelector('.gallery-filters');
+  if (gallery && filters && window.location.protocol !== 'file:') {
+    var activeFilter = 'all';
+    var applyFilter = function () {
+      gallery.querySelectorAll('.shot').forEach(function (shot) {
+        shot.hidden = activeFilter !== 'all' && shot.getAttribute('data-category') !== activeFilter;
+      });
+    };
+    filters.addEventListener('click', function (e) {
+      var button = e.target.closest('[data-filter]');
+      if (!button || !filters.contains(button)) return;
+      activeFilter = button.getAttribute('data-filter');
+      filters.querySelectorAll('[data-filter]').forEach(function (filter) {
+        filter.setAttribute('aria-pressed', String(filter === button));
+      });
+      applyFilter();
+    });
+
     fetch('assets/photos/gallery.json')
       .then(function (response) {
         if (!response.ok) throw new Error('Photo manifest request failed: ' + response.status);
@@ -108,14 +125,16 @@
         });
         photos.forEach(function (photo) {
           if (!photo || typeof photo.file !== 'string' || typeof photo.caption !== 'string' ||
-              !/^[A-Za-z0-9][A-Za-z0-9_-]*\.(jpg|webp)$/i.test(photo.file)) {
+              typeof photo.category !== 'string' || typeof photo.categoryLabel !== 'string' ||
+              !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(photo.category) ||
+              !/^[A-Za-z0-9][A-Za-z0-9_-]*(?:\/[A-Za-z0-9][A-Za-z0-9_-]*)*\.(jpg|webp)$/i.test(photo.file)) {
             throw new Error('Photo manifest contains an invalid entry.');
           }
-          var name = photo.file.replace(/\.(jpg|webp)$/i, '');
-          if (existing[name]) return;
+          if (existing[photo.file]) return;
 
           var figure = document.createElement('figure');
           figure.className = 'shot shot--extra';
+          figure.setAttribute('data-category', photo.category);
           var imageFrame = document.createElement('div');
           imageFrame.className = 'frame';
           imageFrame.style.setProperty('--ratio', '4 / 5');
@@ -124,15 +143,26 @@
           image.alt = photo.caption;
           image.decoding = 'async';
           image.loading = 'lazy';
-          image.src = 'assets/photos/' + photo.file;
+          image.src = 'assets/photos/' + photo.file.split('/').map(encodeURIComponent).join('/');
           imageFrame.appendChild(image);
           var caption = document.createElement('figcaption');
           caption.textContent = photo.caption;
           figure.appendChild(imageFrame);
           figure.appendChild(caption);
           gallery.appendChild(figure);
-          existing[name] = true;
+          existing[photo.file] = true;
+
+          if (!filters.querySelector('[data-filter="' + photo.category + '"]')) {
+            var filter = document.createElement('button');
+            filter.className = 'gallery-filter';
+            filter.type = 'button';
+            filter.setAttribute('data-filter', photo.category);
+            filter.setAttribute('aria-pressed', 'false');
+            filter.textContent = photo.categoryLabel;
+            filters.appendChild(filter);
+          }
         });
+        applyFilter();
       })
       .catch(function (error) {
         console.error('Unable to load additional gallery photos.', error);

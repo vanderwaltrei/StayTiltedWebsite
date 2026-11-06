@@ -63,22 +63,50 @@ jobs:
           fixed_slots = {"photo-hero", "photo-level", *(f"photo-{index:02d}" for index in range(1, 6))}
           gallery = []
 
-          for image in sorted(source.iterdir(), key=lambda path: path.name.casefold()):
+          category_labels = {
+              "anime-manga": "Anime & Manga",
+              "comic-con-africa": "Comic Con Africa",
+              "cosplay": "Cosplay",
+              "halloween": "Halloween",
+              "music-events": "Music Events",
+              "portraits": "Portraits",
+          }
+
+          for image in sorted(source.rglob("*"), key=lambda path: path.as_posix().casefold()):
               if image.name == ".gitkeep":
                   continue
+              if image.is_dir():
+                  continue
               if not image.is_file():
-                  raise SystemExit(f"Only put image files directly in photos/: {image.name}")
+                  raise SystemExit(f"Only put image files in a category folder inside photos/: {image}")
               if image.suffix.casefold() not in {".jpg", ".webp"}:
-                  raise SystemExit(f"Unsupported image type (use .jpg or .webp): {image.name}")
+                  raise SystemExit(f"Unsupported image type (use .jpg or .webp): {image}")
+              relative = image.relative_to(source)
+              if len(relative.parts) > 2:
+                  raise SystemExit(f"Use only one category folder inside photos/: {image}")
               if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*\.(jpg|webp)", image.name, re.IGNORECASE):
                   raise SystemExit(f"Use only letters, numbers, hyphens, and underscores in image names: {image.name}")
-              if image.stem.casefold() in fixed_slots:
+              if len(relative.parts) == 1 and image.stem.casefold() in fixed_slots:
                   continue
+
+              if len(relative.parts) == 1:
+                  category = "other"
+                  category_label = "Other"
+              else:
+                  category = relative.parts[0].casefold()
+                  if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", category):
+                      raise SystemExit(f"Use a lowercase, hyphenated category folder name: {relative.parts[0]}")
+                  category_label = category_labels.get(category, category.replace("-", " ").title())
 
               caption = re.sub(r"[-_]+", " ", image.stem.removeprefix("gallery-")).strip()
               if not caption:
                   raise SystemExit(f"Image filename needs a descriptive name: {image.name}")
-              gallery.append({"file": image.name, "caption": caption[0].upper() + caption[1:]})
+              gallery.append({
+                  "file": relative.as_posix(),
+                  "caption": caption[0].upper() + caption[1:],
+                  "category": category,
+                  "categoryLabel": category_label,
+              })
 
           destination.write_text(json.dumps(gallery, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
