@@ -98,9 +98,13 @@
   if (gallery && filters && window.location.protocol !== 'file:') {
     var activeFilter = 'all';
     var applyFilter = function () {
+      var visible = 0;
       gallery.querySelectorAll('.shot').forEach(function (shot) {
         shot.hidden = activeFilter !== 'all' && shot.getAttribute('data-category') !== activeFilter;
+        if (!shot.hidden) visible += 1;
       });
+      var emptyMessage = document.querySelector('.gallery-empty');
+      if (emptyMessage) emptyMessage.hidden = visible !== 0;
     };
     filters.addEventListener('click', function (e) {
       var button = e.target.closest('[data-filter]');

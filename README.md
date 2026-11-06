@@ -4,12 +4,13 @@ Static landing page. Open `index.html` in a browser; no build step.
 
 ## Add your photographs
 
-The photographer uploads images to the private [`StayTiltedPhotoLibrary`](https://github.com/vanderwaltrei/StayTiltedPhotoLibrary) repository, in its `photos/` folder. A scheduled GitHub Action copies them to this site and publishes them to GitHub Pages, usually within 15 minutes. Photos displayed on this public website are public.
+The photographer uploads images to a category folder in the private [`StayTiltedPhotoLibrary`](https://github.com/vanderwaltrei/StayTiltedPhotoLibrary) repository. A scheduled GitHub Action copies them to this site and publishes them to GitHub Pages, usually within 15 minutes. Photos displayed on this public website are public.
 
 Use `.jpg` or `.webp` files:
 
 - Replace existing featured photos by keeping the same names: `photo-hero` (portrait), `photo-01` to `photo-05` (work gallery), and `photo-level` (square slider).
-- Add gallery photos with descriptive names such as `gallery-first-dance.jpg`. The filename becomes the caption; added photos appear automatically.
+- Add gallery photos inside a category folder, such as `photos/cosplay/zero-two.jpg`. The filename becomes the caption; the folder selects the category. Filters for Cosplay, Anime & Manga, Comic Con Africa, Halloween, Music Events, Portraits, and Other are available in the gallery. Empty categories show a short message until photos are uploaded.
+- To create a new category, add a lowercase, hyphenated folder under `photos/` (for example `convention-meetups/`). The folder name becomes a new gallery filter when it has a photo.
 
 The photo library mirrors `assets/photos/`, so its contents replace the published photo folder on each sync. To let the photographer upload, invite their GitHub account to the private photo repository; they do not need access to this website repository.
 
