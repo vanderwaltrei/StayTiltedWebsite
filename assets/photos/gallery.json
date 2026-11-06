@@ -1,10 +1,14 @@
 [
   {
     "file": "outside_city.JPG",
-    "caption": "Outside city"
+    "caption": "Outside city",
+    "category": "other",
+    "categoryLabel": "Other"
   },
   {
     "file": "siblings.jpg",
-    "caption": "Siblings"
+    "caption": "Siblings",
+    "category": "other",
+    "categoryLabel": "Other"
   }
 ]
