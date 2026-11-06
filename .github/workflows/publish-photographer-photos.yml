@@ -1,0 +1,97 @@
+name: Publish photographer photos
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-photographer-photos
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check publishing credentials
+        id: publishing-credentials
+        env:
+          PHOTO_REPO_READ_TOKEN: ${{ secrets.PHOTO_REPO_READ_TOKEN }}
+          SITE_PUBLISH_TOKEN: ${{ secrets.SITE_PUBLISH_TOKEN }}
+        run: |
+          if [[ -z "$PHOTO_REPO_READ_TOKEN" || -z "$SITE_PUBLISH_TOKEN" ]]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Add PHOTO_REPO_READ_TOKEN and SITE_PUBLISH_TOKEN in repository Actions secrets to enable publishing." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out the website
+        if: steps.publishing-credentials.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.SITE_PUBLISH_TOKEN }}
+
+      - name: Check out the private photo library
+        if: steps.publishing-credentials.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: vanderwaltrei/StayTiltedPhotoLibrary
+          ref: main
+          path: photo-library
+          token: ${{ secrets.PHOTO_REPO_READ_TOKEN }}
+          persist-credentials: false
+
+      - name: Copy photos and generate gallery captions
+        if: steps.publishing-credentials.outputs.ready == 'true'
+        run: |
+          mkdir -p assets/photos
+          rsync --archive --delete --exclude='.gitkeep' photo-library/photos/ assets/photos/
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          source = Path("photo-library/photos")
+          destination = Path("assets/photos/gallery.json")
+          fixed_slots = {"photo-hero", "photo-level", *(f"photo-{index:02d}" for index in range(1, 6))}
+          gallery = []
+
+          for image in sorted(source.iterdir(), key=lambda path: path.name.casefold()):
+              if image.name == ".gitkeep":
+                  continue
+              if not image.is_file():
+                  raise SystemExit(f"Only put image files directly in photos/: {image.name}")
+              if image.suffix.casefold() not in {".jpg", ".webp"}:
+                  raise SystemExit(f"Unsupported image type (use .jpg or .webp): {image.name}")
+              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*\.(jpg|webp)", image.name, re.IGNORECASE):
+                  raise SystemExit(f"Use only letters, numbers, hyphens, and underscores in image names: {image.name}")
+              if image.stem.casefold() in fixed_slots:
+                  continue
+
+              caption = re.sub(r"[-_]+", " ", image.stem.removeprefix("gallery-")).strip()
+              if not caption:
+                  raise SystemExit(f"Image filename needs a descriptive name: {image.name}")
+              gallery.append({"file": image.name, "caption": caption[0].upper() + caption[1:]})
+
+          destination.write_text(json.dumps(gallery, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Publish changes to GitHub Pages
+        if: steps.publishing-credentials.outputs.ready == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/photos
+          if git diff --cached --quiet; then
+            echo "No photo changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish photographer photo updates"
+          git push origin HEAD:main

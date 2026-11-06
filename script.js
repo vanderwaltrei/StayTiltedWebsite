@@ -70,8 +70,7 @@
     setTilt();
   }
 
-  /* Real photos: drop photo-hero, photo-01 ... photo-05, photo-level
-     (.jpg or .webp) into assets/photos and they replace the drawn placeholders. */
+  /* Fixed photo slots use matching names in assets/photos. */
   var exts = ['jpg', 'webp'];
   document.querySelectorAll('[data-photo]').forEach(function (fig) {
     var name = fig.getAttribute('data-photo');
@@ -92,6 +91,53 @@
       img.src = 'assets/photos/' + name + '.' + exts[i];
     })(0);
   });
+
+  /* Additional gallery photos are listed in the manifest published from the photo library. */
+  var gallery = document.querySelector('.gallery');
+  if (gallery && window.location.protocol !== 'file:') {
+    fetch('assets/photos/gallery.json')
+      .then(function (response) {
+        if (!response.ok) throw new Error('Photo manifest request failed: ' + response.status);
+        return response.json();
+      })
+      .then(function (photos) {
+        if (!Array.isArray(photos)) throw new Error('Photo manifest must be an array.');
+        var existing = {};
+        document.querySelectorAll('[data-photo]').forEach(function (fig) {
+          existing[fig.getAttribute('data-photo')] = true;
+        });
+        photos.forEach(function (photo) {
+          if (!photo || typeof photo.file !== 'string' || typeof photo.caption !== 'string' ||
+              !/^[A-Za-z0-9][A-Za-z0-9_-]*\.(jpg|webp)$/i.test(photo.file)) {
+            throw new Error('Photo manifest contains an invalid entry.');
+          }
+          var name = photo.file.replace(/\.(jpg|webp)$/i, '');
+          if (existing[name]) return;
+
+          var figure = document.createElement('figure');
+          figure.className = 'shot shot--extra';
+          var imageFrame = document.createElement('div');
+          imageFrame.className = 'frame';
+          imageFrame.style.setProperty('--ratio', '4 / 5');
+          var image = new Image();
+          image.className = 'ph';
+          image.alt = photo.caption;
+          image.decoding = 'async';
+          image.loading = 'lazy';
+          image.src = 'assets/photos/' + photo.file;
+          imageFrame.appendChild(image);
+          var caption = document.createElement('figcaption');
+          caption.textContent = photo.caption;
+          figure.appendChild(imageFrame);
+          figure.appendChild(caption);
+          gallery.appendChild(figure);
+          existing[name] = true;
+        });
+      })
+      .catch(function (error) {
+        console.error('Unable to load additional gallery photos.', error);
+      });
+  }
 
   /* Service links pre-select the shoot type in the form */
   var select = document.getElementById('f-type');

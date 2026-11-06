@@ -4,13 +4,23 @@ Static landing page. Open `index.html` in a browser; no build step.
 
 ## Add your photographs
 
-Drop files into `assets/photos/` using these names (`.jpg` or `.webp`). They replace the drawn placeholders automatically:
+The photographer uploads images to the private [`StayTiltedPhotoLibrary`](https://github.com/vanderwaltrei/StayTiltedPhotoLibrary) repository, in its `photos/` folder. A scheduled GitHub Action copies them to this site and publishes them to GitHub Pages, usually within 15 minutes. Photos displayed on this public website are public.
 
-- `photo-hero` (portrait, 4:5), the polaroid in the first screen
-- `photo-01` (5:4), `photo-02` to `photo-05` (4:5), the work gallery
-- `photo-level` (square), the "Level it" slider
+Use `.jpg` or `.webp` files:
 
-Captions and alt text live in `index.html` (`data-alt` and `<figcaption>`).
+- Replace existing featured photos by keeping the same names: `photo-hero` (portrait), `photo-01` to `photo-05` (work gallery), and `photo-level` (square slider).
+- Add gallery photos with descriptive names such as `gallery-first-dance.jpg`. The filename becomes the caption; added photos appear automatically.
+
+The photo library mirrors `assets/photos/`, so its contents replace the published photo folder on each sync. To let the photographer upload, invite their GitHub account to the private photo repository; they do not need access to this website repository.
+
+### One-time publishing setup
+
+In this repository's **Settings → Secrets and variables → Actions**, add:
+
+- `PHOTO_REPO_READ_TOKEN`: a fine-grained token with **Contents: read-only** access to `StayTiltedPhotoLibrary`.
+- `SITE_PUBLISH_TOKEN`: a fine-grained token with **Contents: read and write** access to `StayTiltedWebsite`.
+
+The photo repository contains no publishing credentials. Once these two secrets are set, uploads sync automatically; the workflow can also be run manually from the website repository's **Actions** tab.
 
 ## Logo
 
