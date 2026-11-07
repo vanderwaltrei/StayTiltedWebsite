@@ -1,9 +1,39 @@
 [
   {
+    "file": "anime-manga/anime cosplay shoot in my studio.png",
+    "caption": "Anime cosplay shoot in my studio",
+    "category": "anime-manga",
+    "categoryLabel": "Anime & Manga"
+  },
+  {
     "file": "cosplay/Megan.png",
     "caption": "Megan",
     "category": "cosplay",
     "categoryLabel": "Cosplay"
+  },
+  {
+    "file": "halloween/anime cosplay shoot in my studio.png",
+    "caption": "Anime cosplay shoot in my studio",
+    "category": "halloween",
+    "categoryLabel": "Halloween"
+  },
+  {
+    "file": "meet the photographer in cosplay.png",
+    "caption": "Meet the photographer in cosplay",
+    "category": "other",
+    "categoryLabel": "Other"
+  },
+  {
+    "file": "music-events/live event no editing.png",
+    "caption": "Live event no editing",
+    "category": "music-events",
+    "categoryLabel": "Music Events"
+  },
+  {
+    "file": "portraits/anime cosplay shoot in my studio.png",
+    "caption": "Anime cosplay shoot in my studio",
+    "category": "portraits",
+    "categoryLabel": "Portraits"
   },
   {
     "file": "Studio table.png",
