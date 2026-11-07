@@ -60,7 +60,6 @@ jobs:
 
           source = Path("photo-library/photos")
           destination = Path("assets/photos/gallery.json")
-          fixed_slots = {"photo-hero", "photo-level", *(f"photo-{index:02d}" for index in range(1, 6))}
           gallery = []
 
           category_labels = {
@@ -86,9 +85,6 @@ jobs:
                   raise SystemExit(f"Use only one category folder inside photos/: {image}")
               if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 _-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
                   raise SystemExit(f"Use letters, numbers, spaces, hyphens, or underscores in image names: {image.name}")
-              if len(relative.parts) == 1 and image.stem.casefold() in fixed_slots:
-                  continue
-
               if len(relative.parts) == 1:
                   category = "other"
                   category_label = "Other"
