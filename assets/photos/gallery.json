@@ -12,12 +12,6 @@
     "categoryLabel": "Cosplay"
   },
   {
-    "file": "halloween/anime cosplay shoot in my studio.png",
-    "caption": "A quiet moment between worlds",
-    "category": "halloween",
-    "categoryLabel": "Halloween"
-  },
-  {
     "file": "meet the photographer in cosplay.png",
     "caption": "The person behind the lens, in character",
     "category": "other",
@@ -28,12 +22,6 @@
     "caption": "A voice rising through the lights",
     "category": "music-events",
     "categoryLabel": "Music Events"
-  },
-  {
-    "file": "portraits/anime cosplay shoot in my studio.png",
-    "caption": "A quiet moment between worlds",
-    "category": "portraits",
-    "categoryLabel": "Portraits"
   },
   {
     "file": "Studio table.png",

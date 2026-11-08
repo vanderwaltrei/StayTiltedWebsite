@@ -54,6 +54,7 @@ jobs:
           mkdir -p assets/photos
           rsync --archive --delete --exclude='.gitkeep' photo-library/photos/ assets/photos/
           python - <<'PY'
+          import hashlib
           import json
           import re
           from pathlib import Path
@@ -61,6 +62,7 @@ jobs:
           source = Path("photo-library/photos")
           destination = Path("assets/photos/gallery.json")
           gallery = []
+          seen_images = set()
 
           category_labels = {
               "anime-manga": "Anime & Manga",
@@ -109,6 +111,11 @@ jobs:
               )
               if not caption:
                   raise SystemExit(f"Image filename needs a descriptive name: {image.name}")
+              with image.open("rb") as image_file:
+                  fingerprint = hashlib.file_digest(image_file, "sha256").digest()
+              if fingerprint in seen_images:
+                  continue
+              seen_images.add(fingerprint)
               gallery.append({
                   "file": relative.as_posix(),
                   "caption": caption[0].upper() + caption[1:],

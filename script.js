@@ -115,6 +115,10 @@
     if (!image || !photo) return;
     var imagePath = 'assets/photos/' + safePhotoPath(photo.file);
     image.alt = typeof alt === 'string' ? alt : photo.caption;
+    if (image.dataset.libraryPhoto === 'featured') {
+      var caption = image.closest('.hero-photo').querySelector('.photo-caption');
+      if (caption) caption.textContent = photo.caption;
+    }
     image.addEventListener('load', function () { image.classList.remove('is-unloaded'); }, { once: true });
     image.addEventListener('error', function () {
       image.classList.add('is-unloaded');
@@ -130,7 +134,6 @@
       })
       .then(function (photos) {
         if (!Array.isArray(photos)) throw new Error('Photo manifest must be an array.');
-        var layoutClasses = ['shot--one', 'shot--two', 'shot--three', 'shot--four', 'shot--five', 'shot--six', 'shot--seven', 'shot--eight'];
         photos.forEach(function (photo, index) {
           if (!photo || typeof photo.file !== 'string' || typeof photo.caption !== 'string' ||
               typeof photo.category !== 'string' || typeof photo.categoryLabel !== 'string' ||
@@ -140,16 +143,14 @@
           }
         });
         var featuredPhoto = photos[0];
-        var peekPhoto = photos[1] || featuredPhoto;
         setLibraryPhoto(document.querySelector('[data-library-photo="featured"]'), featuredPhoto);
-        setLibraryPhoto(document.querySelector('[data-library-photo="peek"]'), peekPhoto, '');
         setLibraryPhoto(document.querySelector('[data-library-photo="comparison-base"]'), featuredPhoto);
         setLibraryPhoto(document.querySelector('[data-library-photo="comparison-finish"]'), featuredPhoto, '');
 
         photos.forEach(function (photo, index) {
           var imagePath = 'assets/photos/' + safePhotoPath(photo.file);
           var figure = document.createElement('figure');
-          figure.className = 'shot ' + layoutClasses[index % layoutClasses.length];
+          figure.className = 'shot';
           figure.dataset.category = photo.category;
           var button = document.createElement('button');
           button.className = 'shot-open';
