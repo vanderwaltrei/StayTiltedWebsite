@@ -38,9 +38,37 @@
   var range = document.getElementById('comparison-range');
   var comparison = document.getElementById('comparison-frame');
   if (range && comparison) {
+    var setComparison = function (value) {
+      var split = Math.max(Number(range.min), Math.min(Number(range.max), Math.round(value)));
+      range.value = String(split);
+      comparison.style.setProperty('--split', split + '%');
+      range.setAttribute('aria-valuetext', split + ' percent finished photo');
+    };
+    var updateFromPointer = function (event) {
+      var bounds = comparison.getBoundingClientRect();
+      setComparison(((event.clientX - bounds.left) / bounds.width) * 100);
+    };
+    var activePointer = null;
     range.addEventListener('input', function () {
-      comparison.style.setProperty('--split', range.value + '%');
-      range.setAttribute('aria-valuetext', range.value + ' percent finished photo');
+      setComparison(range.value);
+    });
+    comparison.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0) return;
+      activePointer = event.pointerId;
+      comparison.setPointerCapture(activePointer);
+      updateFromPointer(event);
+    });
+    comparison.addEventListener('pointermove', function (event) {
+      if (event.pointerId === activePointer) updateFromPointer(event);
+    });
+    comparison.addEventListener('pointerup', function (event) {
+      if (event.pointerId === activePointer) activePointer = null;
+    });
+    comparison.addEventListener('pointercancel', function () {
+      activePointer = null;
+    });
+    comparison.addEventListener('lostpointercapture', function () {
+      activePointer = null;
     });
   }
 

@@ -161,15 +161,15 @@ h3 { font-size: clamp(2rem, 3.2vw, 3rem); letter-spacing: -.04em; }
 .promise-list p { color: #4b4d48; font-size: .87rem; }
 .promise-list strong { display: block; margin-bottom: .15rem; color: var(--ink); font-size: .85rem; }
 .comparison { min-width: 0; }
-.comparison-frame { position: relative; overflow: hidden; border-radius: 8px; background: #c7c1b6; box-shadow: 0 20px 50px rgba(7,6,5,.13); }
+.comparison-frame { position: relative; overflow: hidden; border-radius: 8px; background: #c7c1b6; box-shadow: 0 20px 50px rgba(7,6,5,.13); cursor: ew-resize; touch-action: pan-y; user-select: none; }
 .comparison-frame > img { display: block; width: 100%; height: clamp(330px, 46vw, 540px); object-fit: cover; object-position: center 42%; }
 .comparison-base { filter: saturate(.35) contrast(.86) brightness(1.08); }
 .comparison-finish { position: absolute; inset: 0; filter: saturate(1.25) contrast(1.08) sepia(.08); clip-path: inset(0 0 0 var(--split)); }
 .comparison-label { position: absolute; bottom: 14px; padding: .4rem .55rem; border-radius: 3px; color: white; background: rgba(7,6,5,.67); font-size: .56rem; font-weight: 700; letter-spacing: .1em; }
 .comparison-label--left { left: 12px; }
 .comparison-label--right { right: 12px; }
-.comparison-divider { position: absolute; inset: 0 auto 0 var(--split); display: grid; width: 2px; place-items: center; background: white; transform: translateX(-50%); pointer-events: none; }
-.comparison-divider span { display: grid; width: 44px; height: 44px; place-items: center; border: 2px solid white; border-radius: 50%; color: var(--ink); background: var(--cream); font-size: 1.2rem; box-shadow: 0 3px 12px rgba(0,0,0,.2); }
+.comparison-divider { position: absolute; inset: 0 auto 0 var(--split); width: 2px; background: white; transform: translateX(-50%); pointer-events: none; }
+.comparison-divider span { position: absolute; top: 50%; left: 50%; display: grid; width: 44px; height: 44px; place-items: center; border: 2px solid white; border-radius: 50%; color: var(--ink); background: var(--cream); font-size: 1.2rem; box-shadow: 0 3px 12px rgba(0,0,0,.2); cursor: ew-resize; pointer-events: auto; transform: translate(-50%, -50%); }
 .comparison-range { display: block; width: 100%; height: 28px; margin: .55rem 0 0; accent-color: var(--red); cursor: ew-resize; }
 .comparison-hint { color: #686962; font-size: .72rem; text-align: center; }
 
