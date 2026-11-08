@@ -70,6 +70,15 @@ jobs:
               "music-events": "Music Events",
               "portraits": "Portraits",
           }
+          caption_overrides = {
+              "anime-manga/anime cosplay shoot in my studio.png": "A quiet moment between worlds",
+              "cosplay/Megan.png": "A little drama in full bloom",
+              "halloween/anime cosplay shoot in my studio.png": "A quiet moment between worlds",
+              "meet the photographer in cosplay.png": "The person behind the lens, in character",
+              "music-events/live event no editing.png": "A voice rising through the lights",
+              "portraits/anime cosplay shoot in my studio.png": "A quiet moment between worlds",
+              "Studio table.png": "Props, pages, and a touch of blue",
+          }
 
           for image in sorted(source.rglob("*"), key=lambda path: path.as_posix().casefold()):
               if image.name == ".gitkeep":
@@ -94,7 +103,10 @@ jobs:
                       raise SystemExit(f"Use a lowercase, hyphenated category folder name: {relative.parts[0]}")
                   category_label = category_labels.get(category, category.replace("-", " ").title())
 
-              caption = re.sub(r"[-_]+", " ", image.stem.removeprefix("gallery-")).strip()
+              caption = caption_overrides.get(
+                  relative.as_posix(),
+                  re.sub(r"[-_]+", " ", image.stem.removeprefix("gallery-")).strip(),
+              )
               if not caption:
                   raise SystemExit(f"Image filename needs a descriptive name: {image.name}")
               gallery.append({

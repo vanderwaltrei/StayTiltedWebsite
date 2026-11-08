@@ -10,7 +10,7 @@ The photographer can also upload images to a category folder in the private [`St
 
 Use browser-friendly image files: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.gif`, or `.bmp`. HEIC and TIFF photos need to be converted before upload.
 
-- Add gallery photos inside a category folder, such as `photos/cosplay/zero-two.jpg`. The filename becomes the caption; the folder selects the category.
+- Add gallery photos inside a category folder, such as `photos/cosplay/zero-two.jpg`. Use a descriptive filename for new-photo captions; the folder selects the category. Existing photos have polished captions configured in the publishing workflow.
 - Existing filters are Cosplay, Portraits, Events, and Brands. A category in `gallery.json` that does not already have a filter is added automatically.
 - The photo library mirrors `assets/photos/`, so its contents replace the published photo folder on each sync. To let the photographer upload, invite their GitHub account to the private photo repository; they do not need access to this website repository.
 
