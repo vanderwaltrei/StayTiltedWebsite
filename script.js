@@ -6,6 +6,24 @@
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
+  // Scroll entrance: each block rises and fades in once. Without IntersectionObserver (or with reduced motion) nothing is hidden.
+  var revealObserver = ('IntersectionObserver' in window && !reduceMotion) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      revealObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
+  var reveal = function (el, step) {
+    if (!revealObserver) return;
+    el.style.setProperty('--i', String(Math.min(step || 0, 4)));
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  };
+  document.querySelectorAll('.section-heading, .theme-card, .path, .pack, .pack-cta, .service-grid, .about-copy, .promise-copy, .comparison, .faq-intro, .questions, .contact-copy, .form').forEach(function (el) {
+    reveal(el, el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0);
+  });
+
   var menuButton = document.querySelector('.nav-toggle');
   var menu = document.getElementById('nav-links');
   var setMenu = function (open) {
@@ -170,7 +188,7 @@
           overlay.className = 'shot-overlay';
           var text = document.createElement('span');
           var category = document.createElement('small');
-          category.textContent = photo.categoryLabel.toUpperCase();
+          category.textContent = photo.categoryLabel;
           var title = document.createElement('strong');
           title.textContent = photo.caption;
           text.append(category, title);
@@ -187,6 +205,7 @@
           caption.appendChild(position);
           figure.append(button, caption);
           gallery.appendChild(figure);
+          reveal(figure, index % 3);
 
           if (!filters.querySelector('[data-filter="' + photo.category + '"]')) {
             var filter = document.createElement('button');
@@ -210,6 +229,28 @@
           empty.hidden = false;
         }
       });
+  }
+
+  var themeCard = document.getElementById('theme-card');
+  if (themeCard) {
+    fetch('assets/theme.json')
+      .then(function (response) {
+        if (!response.ok) throw new Error('Theme request failed: ' + response.status);
+        return response.json();
+      })
+      .then(function (theme) {
+        if (!theme || typeof theme.name !== 'string' || !theme.name) return; // no name: card stays hidden
+        document.getElementById('theme-name').textContent = theme.name;
+        document.getElementById('theme-blurb').textContent = theme.blurb || '';
+        document.getElementById('theme-until').textContent = theme.until || 'Now on set';
+        var themeImage = document.getElementById('theme-image');
+        if (typeof theme.image === 'string' && theme.image) {
+          themeImage.src = safePhotoPath(theme.image);
+          themeImage.alt = 'The ' + theme.name + ' set in the studio';
+        }
+        themeCard.hidden = false;
+      })
+      .catch(function (error) { console.error('Unable to load the current theme.', error); });
   }
 
   var lightbox = document.getElementById('lightbox');
@@ -311,30 +352,51 @@
         if (field.input.dataset.touched) validateField(field);
       });
     });
+    var checkForm = function () {
+      var valid = fields.map(validateField).every(Boolean);
+      if (valid) {
+        status.classList.remove('is-error');
+        return true;
+      }
+      status.classList.add('is-error');
+      status.textContent = 'A couple of details need a little love before we can send your note.';
+      var firstInvalid = fields.find(function (field) { return !field.input.checkValidity(); });
+      if (firstInvalid) firstInvalid.input.focus();
+      return false;
+    };
+    var buildNote = function () {
+      var data = new FormData(form);
+      return {
+        subject: 'Stay Tilted shoot enquiry: ' + data.get('type'),
+        body: [
+          'Name: ' + data.get('name'),
+          'Email: ' + data.get('email'),
+          'What we are shooting: ' + data.get('type'),
+          'Date: ' + (data.get('date') || 'Flexible'),
+          '',
+          'What I am picturing:',
+          data.get('message')
+        ].join('\n')
+      };
+    };
+    var waButton = document.getElementById('wa-send');
+    if (waButton) {
+      waButton.addEventListener('click', function () {
+        if (!checkForm()) return;
+        var note = buildNote();
+        window.open('https://wa.me/' + form.dataset.whatsapp + '?text=' +
+          encodeURIComponent(note.subject + '\n\n' + note.body), '_blank', 'noopener');
+        status.textContent = 'WhatsApp should open with your note ready to send. Nothing is sent until you hit send there.';
+      });
+    }
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      var valid = fields.map(validateField).every(Boolean);
-      if (!valid) {
-        status.classList.add('is-error');
-        status.textContent = 'A couple of details need a little love before we can write your email.';
-        var firstInvalid = fields.find(function (field) { return !field.input.checkValidity(); });
-        if (firstInvalid) firstInvalid.input.focus();
-        return;
-      }
-      status.classList.remove('is-error');
+      if (!checkForm()) return;
       var button = form.querySelector('.submit-btn');
       var label = button.querySelector('.submit-label');
-      var data = new FormData(form);
-      var subject = 'StayTilted shoot enquiry: ' + data.get('type');
-      var body = [
-        'Name: ' + data.get('name'),
-        'Email: ' + data.get('email'),
-        'What we are shooting: ' + data.get('type'),
-        'Date: ' + (data.get('date') || 'Flexible'),
-        '',
-        'What I am picturing:',
-        data.get('message')
-      ].join('\n');
+      var note = buildNote();
+      var subject = note.subject;
+      var body = note.body;
       button.disabled = true;
       label.textContent = 'Sending your note…';
       status.textContent = '';

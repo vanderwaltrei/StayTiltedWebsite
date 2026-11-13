@@ -1,4 +1,4 @@
-# StayTilted Studio
+# Stay Tilted
 
 A responsive single-page photography portfolio. Serve the static files locally or publish them with GitHub Pages; there is no build step. The gallery manifest is fetched at runtime, so use a local web server rather than opening `index.html` as a `file://` URL.
 
@@ -23,10 +23,14 @@ In this repository's **Settings → Secrets and variables → Actions**, add:
 
 The photo repository contains no publishing credentials. Once these two secrets are set, uploads sync automatically; the workflow can also be run manually from the website repository's **Actions** tab.
 
+## Themed set and studio
+
+The "Now on set" card in the Studio section is filled from `assets/theme.json`. Update `name`, `blurb`, optional `until` (e.g. "On set until 31 December") and `image` (a path from the site root) whenever the set changes. Leave `name` empty to hide the card. Keep studio photos outside `assets/photos/` unless they also exist in the photo library, because the sync replaces that folder.
+
 ## Before launch
 
-- `hello@staytilted.com` is a placeholder; replace it in `index.html`.
+- `hello@staytilted.com` is a placeholder; replace it in `index.html` (the footer link, the contact section, and the form's `data-email`). The WhatsApp number (+27 83 265 1670) is set in several links in `index.html` and as `data-whatsapp` on the form.
 - Review the sample service descriptions and FAQ answers.
 - Add `<link rel="canonical">` and `og:url` / `og:image` once the domain is known.
-- Fonts (Fraunces, DM Sans) load from Google Fonts. Self-host them if preferred.
-- The enquiry form validates details and opens a prefilled email draft; it does not send data to a server. Configure a form service if direct submission is needed.
+- Fonts (Bricolage Grotesque, DM Sans) load from Google Fonts. Self-host them if preferred.
+- The enquiry form validates details and opens a prefilled email draft or WhatsApp message; it does not send data to a server. Configure a form service if direct submission is needed.
