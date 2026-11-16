@@ -20,7 +20,7 @@
     el.classList.add('reveal');
     revealObserver.observe(el);
   };
-  document.querySelectorAll('.section-heading, .theme-card, .path, .pack, .pack-cta, .service-grid, .about-copy, .promise-copy, .comparison, .faq-intro, .questions, .contact-copy, .form').forEach(function (el) {
+  document.querySelectorAll('.section-heading, .theme-card, .path, .pack, .pack-cta, .service-grid, .about-copy, .promise-copy, .comparison, .faq-intro, .questions, .social-grid, .work-cta, .gallery-cta-inner, .contact-copy, .form').forEach(function (el) {
     reveal(el, el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0);
   });
 
@@ -144,7 +144,7 @@
     }, { once: true });
     image.src = imagePath;
   };
-  if (gallery && filters) {
+  if (gallery || document.querySelector('[data-library-photo]')) {
     fetch('assets/photos/gallery.json')
       .then(function (response) {
         if (!response.ok) throw new Error('Photo manifest request failed: ' + response.status);
@@ -165,7 +165,13 @@
         setLibraryPhoto(document.querySelector('[data-library-photo="comparison-base"]'), featuredPhoto);
         setLibraryPhoto(document.querySelector('[data-library-photo="comparison-finish"]'), featuredPhoto, '');
 
-        photos.forEach(function (photo, index) {
+        // The landing page sets data-limit to show a few thumbnails; the gallery page shows everything.
+        var limit = gallery ? parseInt(gallery.dataset.limit, 10) : 0;
+        var shown = !gallery ? [] : (limit > 0 ? photos.slice(0, limit) : photos);
+        var totalLabel = document.getElementById('gallery-total');
+        if (totalLabel) totalLabel.textContent = String(photos.length).padStart(2, '0');
+
+        shown.forEach(function (photo, index) {
           var imagePath = 'assets/photos/' + safePhotoPath(photo.file);
           var figure = document.createElement('figure');
           figure.className = 'shot';
@@ -201,13 +207,13 @@
           var caption = document.createElement('figcaption');
           caption.append(document.createTextNode(photo.caption));
           var position = document.createElement('span');
-          position.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(photos.length).padStart(2, '0');
+          position.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(shown.length).padStart(2, '0');
           caption.appendChild(position);
           figure.append(button, caption);
           gallery.appendChild(figure);
           reveal(figure, index % 3);
 
-          if (!filters.querySelector('[data-filter="' + photo.category + '"]')) {
+          if (filters && !filters.querySelector('[data-filter="' + photo.category + '"]')) {
             var filter = document.createElement('button');
             filter.className = 'filter-chip';
             filter.type = 'button';
@@ -220,7 +226,20 @@
         if (empty) {
           empty.textContent = photos.length ? 'No frames in this little corner yet. Try another filter?' : 'No photos found in the studio library yet.';
         }
+        if (filters) {
+          filters.querySelectorAll('[data-filter]').forEach(function (chip) {
+            var n = chip.dataset.filter === 'all' ? shown.length : shown.filter(function (p) { return p.category === chip.dataset.filter; }).length;
+            var badge = document.createElement('span');
+            badge.className = 'chip-count';
+            badge.textContent = String(n);
+            chip.append(' ', badge);
+          });
+        }
         updateGallery();
+        // gallery.html#cosplay opens the gallery already filtered to that category
+        var hash = decodeURIComponent((window.location.hash || '').slice(1)).replace(/[^a-z0-9-]/g, '');
+        var hashChip = filters && hash ? filters.querySelector('[data-filter="' + hash + '"]') : null;
+        if (hashChip) hashChip.click();
       })
       .catch(function (error) {
         console.error('Unable to load additional gallery photos.', error);
@@ -270,7 +289,7 @@
       var figure = button.closest('.shot');
       lightboxImage.src = image.currentSrc || image.src;
       lightboxImage.alt = image.alt;
-      lightboxCaption.textContent = figure.querySelector('figcaption').textContent;
+      lightboxCaption.textContent = image.alt;
       lightboxCount.textContent = (currentIndex + 1) + ' / ' + openButtons.length;
       previous.hidden = openButtons.length < 2;
       next.hidden = openButtons.length < 2;

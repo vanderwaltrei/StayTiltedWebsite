@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#00251e">
-  <title>Stay Tilted — Photographs with a pulse</title>
+  <title>Stay Tilted - Photographs with a pulse</title>
   <meta name="description" content="Cosplay, portraits, live events and creative brands, shot in a themed studio in Springs, Gauteng. Book a guided session, or hire the studio for your own shoot.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Stay Tilted — Photographs with a pulse">
@@ -20,6 +20,11 @@
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.73 5.7 3.17 0 5.75-2.58 5.75-5.7V8.97a7.3 7.3 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.39H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.95h-1.52c-1.49 0-1.96.93-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.39C19.61 23.02 24 18.06 24 12.07z"/></symbol>
+  </svg>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
@@ -30,7 +35,7 @@
         <span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#work">Work</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="#studio">Studio</a></li>
         <li><a href="#packages">Packages</a></li>
         <li><a href="#about">About</a></li>
@@ -80,15 +85,13 @@
           </div>
           <p class="heading-aside">The best pictures feel like <em>something.</em></p>
         </div>
-        <div class="work-toolbar">
-          <div class="gallery-filters" role="group" aria-label="Filter photos by category">
-            <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">Everything</button>
-          </div>
-          <p class="frame-count" id="frame-count" aria-live="polite">00 <span>frames</span></p>
-        </div>
-        <div class="gallery" aria-live="polite">
+        <div class="gallery" data-limit="6" aria-live="polite">
         </div>
         <p class="gallery-empty" role="status">Loading photos from the studio library…</p>
+        <div class="work-cta">
+          <p>Just a few favourites here. The full gallery has every frame, sorted by what you’re into.</p>
+          <a class="btn btn--red btn--large" href="gallery.html">See the full gallery <span class="count-pill" id="gallery-total"></span> <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </section>
 
@@ -367,6 +370,38 @@
       </div>
     </section>
 
+    <section class="section social" id="social" aria-labelledby="social-title">
+      <div class="container">
+        <div class="section-heading social-heading">
+          <div>
+            <h2 id="social-title">Follow the<br>tilt.</h2>
+          </div>
+          <p class="heading-aside">New shoots, studio sets and the <em>behind-the-scenes</em> chaos.</p>
+        </div>
+        <div class="social-grid">
+          <!-- TODO: replace YOUR_HANDLE in each link with the real account name -->
+          <a class="social-card" href="https://www.instagram.com/YOUR_HANDLE/" target="_blank" rel="noopener">
+            <svg class="social-icon" aria-hidden="true"><use href="#i-instagram"/></svg>
+            <h3>Instagram</h3>
+            <p>Fresh shoots, new sets and the finished frames.</p>
+            <span class="social-go">Follow along <span aria-hidden="true">↗</span></span>
+          </a>
+          <a class="social-card" href="https://www.tiktok.com/@YOUR_HANDLE" target="_blank" rel="noopener">
+            <svg class="social-icon" aria-hidden="true"><use href="#i-tiktok"/></svg>
+            <h3>TikTok</h3>
+            <p>Behind the scenes, set builds and shoot-day chaos.</p>
+            <span class="social-go">Watch along <span aria-hidden="true">↗</span></span>
+          </a>
+          <a class="social-card" href="https://www.facebook.com/YOUR_HANDLE" target="_blank" rel="noopener">
+            <svg class="social-icon" aria-hidden="true"><use href="#i-facebook"/></svg>
+            <h3>Facebook</h3>
+            <p>Event galleries, studio news and booking updates.</p>
+            <span class="social-go">Say hi <span aria-hidden="true">↗</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section class="section contact on-light" id="contact" aria-labelledby="contact-title">
       <div class="container contact-grid">
         <div class="contact-copy">
@@ -424,6 +459,12 @@
       <p class="footer-line">Come as you are.<br>We’ll bring the camera.</p>
       <a class="back-top" href="#top">Back to the top <span aria-hidden="true">↗</span></a>
     </div>
+    <ul class="container footer-social" aria-label="Social media">
+      <li class="footer-social-label">Follow along</li>
+      <li><a href="https://www.instagram.com/YOUR_HANDLE/" target="_blank" rel="noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+      <li><a href="https://www.tiktok.com/@YOUR_HANDLE" target="_blank" rel="noopener" aria-label="TikTok"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a></li>
+      <li><a href="https://www.facebook.com/YOUR_HANDLE" target="_blank" rel="noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+    </ul>
     <p class="container footer-wordmark" aria-hidden="true">Stay Tilted<span>.</span></p>
     <div class="container footer-bottom">
       <span>© <span id="year">2026</span> Stay Tilted · <a href="https://wa.me/27832651670" target="_blank" rel="noopener">WhatsApp +27 83 265 1670</a></span>
