@@ -1,6 +1,6 @@
 {
-  "name": "Theme name goes here",
-  "blurb": "Two lines about the current set: the mood, the colours, what to wear. Edit assets/theme.json to change this.",
-  "until": "",
+  "name": "Cloudy Dreams",
+  "blurb": "This set will be up for a little shorter than usual, to make room for rAge and the Christmas set.",
+  "until": "Now on set",
   "image": "assets/photos/Studio table.png"
 }
