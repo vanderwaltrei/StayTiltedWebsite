@@ -85,6 +85,13 @@
         <div class="gallery" aria-live="polite">
         </div>
         <p class="gallery-empty" role="status">Loading photos from the studio library…</p>
+        <!-- Filled from assets/instagram.txt (one post URL per line). Stays empty if the file has none. -->
+        <!-- Instagram draws its header and bottom bar inside the iframe, so each post sits in a fixed 4:5 box and the iframe is shifted/clipped to show only the picture. 55px = header height, 153px = bottom bar height. -->
+        <style>
+          #ig-feed .ig-post{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:8px;background:#000}
+          #ig-feed .ig-post iframe{position:absolute;top:-55px;left:0;width:100%!important;min-width:0!important;max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;clip-path:inset(0 0 153px 0)}
+        </style>
+        <div id="ig-feed" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(326px,1fr));gap:1.5rem;margin-top:2.5rem"></div>
       </div>
     </section>
 

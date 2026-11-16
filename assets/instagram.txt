@@ -1,0 +1,11 @@
+# Instagram posts shown in the "Follow the tilt" section.
+# Paste one post or reel link per line, newest first (max 12 shown). Lines that aren't
+# an instagram.com/p/... or /reel/... link are ignored, so these notes are safe.
+# Get a link: open the post on Instagram > ... menu > Copy link.
+#
+# https://www.instagram.com/p/EXAMPLE123/
+
+https://www.instagram.com/p/DfZUPzgkVLZ/
+https://www.instagram.com/p/DSM_zhrCMnU/
+https://www.instagram.com/p/DONwNErjEDp/
+https://www.instagram.com/p/DSM83cOCBQ9/

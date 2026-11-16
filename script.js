@@ -250,6 +250,38 @@
       });
   }
 
+  var igFeed = document.getElementById('ig-feed');
+  if (igFeed) {
+    fetch('assets/instagram.txt')
+      .then(function (response) {
+        if (!response.ok) throw new Error('Instagram list request failed: ' + response.status);
+        return response.text();
+      })
+      .then(function (text) {
+        // shortcut: newest-first list capped at 12 embeds, raise the cap if the feed should show more
+        var urls = text.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(function (line) {
+          return /^https:\/\/www\.instagram\.com\/(p|reel)\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(line);
+        }).slice(0, 12);
+        if (!urls.length) return;
+        urls.forEach(function (url) {
+          var post = document.createElement('blockquote');
+          post.className = 'instagram-media';
+          post.dataset.instgrmPermalink = url;
+          post.dataset.instgrmVersion = '14';
+          post.style.cssText = 'margin:0;width:100%;min-width:326px;max-width:540px';
+          var box = document.createElement('div');
+          box.className = 'ig-post';
+          box.appendChild(post);
+          igFeed.appendChild(box);
+        });
+        var embedScript = document.createElement('script');
+        embedScript.async = true;
+        embedScript.src = 'https://www.instagram.com/embed.js';
+        document.body.appendChild(embedScript);
+      })
+      .catch(function (error) { console.error('Unable to load Instagram posts.', error); });
+  }
+
   var themeCard = document.getElementById('theme-card');
   if (themeCard) {
     fetch('assets/theme.json')
