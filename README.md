@@ -27,10 +27,27 @@ The photo repository contains no publishing credentials. Once these two secrets 
 
 The "Now on set" card in the Studio section is filled from `assets/theme.json`. Update `name`, `blurb`, optional `until` (e.g. "On set until 31 December") and `image` (a path from the site root) whenever the set changes. Leave `name` empty to hide the card. Keep studio photos outside `assets/photos/` unless they also exist in the photo library, because the sync replaces that folder.
 
+## Enquiry database (Supabase)
+
+Enquiries from the contact form can be stored in a Supabase Postgres table. Until this is set up, the form keeps its original email/WhatsApp behaviour.
+
+1. Create a free project at supabase.com.
+2. In **SQL Editor**, run `supabase/schema.sql`. The public site can only insert rows; only you can read them.
+3. In **Project Settings → API**, copy the Project URL and the `anon` public key into `data-supabase-url` and `data-supabase-key` on the `<form id="enquiry">` in `index.html`. The anon key is safe to publish because row-level security limits it to inserts. Never put the `service_role` key in the site.
+4. View enquiries under **Table Editor → enquiries**; change `status` as you work through them.
+
+If the database can't be reached, the form falls back to the email draft. WhatsApp enquiries are also logged (`via = whatsapp`) once the form is valid.
+
+## SEO and AI search
+
+- `robots.txt`, `sitemap.xml` and `llms.txt` are in the site root. Update `lastmod` in `sitemap.xml` when pages change materially, and keep prices in `llms.txt` and the JSON-LD in `index.html` in sync with the packages section.
+- `index.html` carries structured data (business, price catalogue, FAQ); `gallery.html` carries a breadcrumb and collection page.
+- Social previews currently use the logo. Add a 1200x630 image (a favourite photo with the logo) and point `og:image` / `twitter:image` at it.
+- Once the social accounts exist, replace `YOUR_HANDLE` in the links and add them as `sameAs` in the business JSON-LD. Add Google Business Profile and submit `sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+
 ## Before launch
 
 - `hello@staytilted.com` is a placeholder; replace it in `index.html` (the footer link, the contact section, and the form's `data-email`). The WhatsApp number (+27 83 265 1670) is set in several links in `index.html` and as `data-whatsapp` on the form.
 - Review the sample service descriptions and FAQ answers.
-- Add `<link rel="canonical">` and `og:url` / `og:image` once the domain is known.
 - Fonts (Bricolage Grotesque, DM Sans) load from Google Fonts. Self-host them if preferred.
-- The enquiry form validates details and opens a prefilled email draft or WhatsApp message; it does not send data to a server. Configure a form service if direct submission is needed.
+- The enquiry form validates details and opens a prefilled email draft or WhatsApp message. If Supabase is configured, it also stores validated enquiries; otherwise, it uses the original email/WhatsApp-only flow.

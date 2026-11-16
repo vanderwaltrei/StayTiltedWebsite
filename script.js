@@ -398,6 +398,34 @@
         ].join('\n')
       };
     };
+    // Enquiries are stored in Supabase when data-supabase-url / data-supabase-key are set on the form (see supabase/schema.sql).
+    // The anon key is public by design: row-level security only allows inserts. Without it, the mailto/WhatsApp flow is used as before.
+    var dbUrl = (form.dataset.supabaseUrl || '').replace(/\/$/, '');
+    var dbKey = form.dataset.supabaseKey || '';
+    var dbReady = function () { return /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(dbUrl) && dbKey.length > 20; };
+    var saveEnquiry = function (via) {
+      if (!dbReady()) return Promise.resolve(false);
+      var data = new FormData(form);
+      if (data.get('website')) return Promise.resolve(true); // honeypot: bots fill this in
+      return fetch(dbUrl + '/rest/v1/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: dbKey, Authorization: 'Bearer ' + dbKey, Prefer: 'return=minimal' },
+        body: JSON.stringify({
+          name: String(data.get('name')).trim(),
+          email: String(data.get('email')).trim(),
+          shoot_type: data.get('type'),
+          preferred_date: data.get('date') || null,
+          message: String(data.get('message')).trim(),
+          via: via,
+          page: window.location.pathname
+        })
+      }).then(function (response) { return response.ok; }).catch(function () { return false; });
+    };
+    if (dbReady()) {
+      form.querySelector('.submit-label').textContent = 'Send enquiry';
+      var formSmall = form.querySelector('.form-small');
+      if (formSmall) formSmall.textContent = 'Your enquiry goes straight to the studio and we’ll reply by email or WhatsApp.';
+    }
     var waButton = document.getElementById('wa-send');
     if (waButton) {
       waButton.addEventListener('click', function () {
@@ -405,6 +433,7 @@
         var note = buildNote();
         window.open('https://wa.me/' + form.dataset.whatsapp + '?text=' +
           encodeURIComponent(note.subject + '\n\n' + note.body), '_blank', 'noopener');
+        saveEnquiry('whatsapp');
         status.textContent = 'WhatsApp should open with your note ready to send. Nothing is sent until you hit send there.';
       });
     }
@@ -419,14 +448,26 @@
       button.disabled = true;
       label.textContent = 'Sending your note…';
       status.textContent = '';
-      window.setTimeout(function () {
+      var openEmail = function () {
         window.location.href = 'mailto:' + form.dataset.email +
           '?subject=' + encodeURIComponent(subject) +
           '&body=' + encodeURIComponent(body);
         label.textContent = 'Email draft is ready';
         button.disabled = false;
         status.textContent = 'Your email app should open with your note ready to send. Nothing is sent until you hit send there.';
-      }, reduceMotion ? 0 : 350);
+      };
+      if (!dbReady()) {
+        window.setTimeout(openEmail, reduceMotion ? 0 : 350);
+        return;
+      }
+      saveEnquiry('form').then(function (saved) {
+        if (!saved) { openEmail(); return; } // database unreachable: fall back to the email draft
+        form.reset();
+        label.textContent = 'Send enquiry';
+        button.disabled = false;
+        status.classList.remove('is-error');
+        status.textContent = 'Thank you! Your enquiry is in and we’ll be in touch soon.';
+      });
     });
   }
 })();
