@@ -436,6 +436,7 @@ main { overflow-x: clip; }
 /* ---- Gallery teaser (home) + gallery page ---- */
 .work-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 3.5rem; }
 .work-cta p { max-width: 40ch; color: #3d403c; font-size: 1rem; }
+.work-cta .btn { min-height: 76px; padding-inline: 2.6rem; font-size: 1.25rem; }
 .count-pill { padding: .1rem .6rem; border-radius: 999px; background: rgba(255,255,255,.22); font-size: .8rem; }
 .count-pill:empty { display: none; }
 .chip-count { margin-left: .15rem; font-size: .8em; opacity: .6; }

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Stay Tilted — font options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600..800&family=Big+Shoulders+Display:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=Dela+Gothic+One&family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    :root { --forest:#00251e; --green:#00463e; --teal:#015a60; --cream:#f9f9f9; --paper:#f3efe7; --red:#c03d35; --ink:#070605; --lime:#d3ef75; --mint:#a4d5ad; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: #001a15; color: var(--cream); font: 16px/1.6 system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    .wrap { width: min(100% - 2.4rem, 1280px); margin-inline: auto; padding-block: 3rem 5rem; }
+    .intro h1 { margin: 0 0 .6rem; font: 800 clamp(2rem, 4vw, 3rem)/1.05 system-ui, sans-serif; letter-spacing: -.02em; }
+    .intro p { max-width: 62ch; margin: 0; color: rgba(249,249,249,.78); }
+    .intro p + p { margin-top: .6rem; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+    .opt { overflow: hidden; border-radius: 6px; background: var(--forest); }
+    .opt-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .9rem 1.4rem; background: #000; font: 600 .85rem/1.3 system-ui, sans-serif; }
+    .opt-head b { color: var(--lime); }
+    .opt-head span { color: rgba(249,249,249,.7); }
+    .dark { padding: 2rem 1.4rem 2.2rem; font-family: var(--b); }
+    .dark h2 { margin: 0 0 1rem; font-family: var(--d); font-weight: var(--dw); font-stretch: var(--ds, 100%); text-transform: var(--tt, none); letter-spacing: var(--ls); line-height: var(--lh, .98); font-size: calc(clamp(2.2rem, 4vw, 3.6rem) * var(--sc, 1)); text-wrap: balance; }
+    .dark p { max-width: 38rem; margin: 0 0 1.4rem; color: rgba(249,249,249,.85); }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.4rem; }
+    .pill { display: inline-flex; min-height: 46px; align-items: center; padding: .7rem 1.4rem; border-radius: 999px; background: var(--red); color: #fff; font-family: var(--b); font-weight: 700; font-size: .95rem; }
+    .nav-sample { font-family: var(--b); font-weight: 600; font-size: .95rem; color: rgba(249,249,249,.9); display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .light { padding: 1.8rem 1.4rem 2rem; background: var(--paper); color: var(--ink); font-family: var(--b); }
+    .light h3 { margin: 0 0 1rem; font-family: var(--d); font-weight: var(--dw); font-stretch: var(--ds, 100%); text-transform: var(--tt, none); letter-spacing: var(--ls); line-height: var(--lh, .98); font-size: calc(clamp(1.9rem, 3vw, 2.6rem) * var(--sc, 1)); }
+    .light .price { margin: 0 0 .6rem; font-family: var(--d); font-weight: var(--dw); font-stretch: var(--ds, 100%); text-transform: var(--tt, none); letter-spacing: var(--ls); font-size: calc(3.2rem * var(--sc, 1)); line-height: 1; }
+    .light ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .25rem; font-size: .95rem; color: #3d403c; }
+    .light .q { margin-top: 1.2rem; padding: .9rem 1rem; background: #fff; font-family: var(--d); font-weight: 600; font-size: 1.1rem; }
+    .code { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.4rem; background: #000; }
+    .code code { overflow-x: auto; color: var(--mint); font: 500 .78rem/1.5 ui-monospace, Consolas, monospace; white-space: nowrap; }
+    .code button { flex: none; padding: .45rem .9rem; border: 0; border-radius: 999px; background: rgba(249,249,249,.14); color: var(--cream); font: 600 .8rem system-ui, sans-serif; cursor: pointer; }
+    .code button:hover { background: var(--red); }
+
+    .o1 { --d:"Bricolage Grotesque"; --b:"DM Sans"; --dw:800; --ds:85%; --ls:-.035em; }
+    .o2 { --d:"Syne"; --b:"Manrope"; --dw:800; --ls:-.03em; --sc:.92; }
+    .o3 { --d:"Unbounded"; --b:"Inter"; --dw:700; --ls:-.04em; --sc:.68; --lh:1.08; }
+    .o4 { --d:"Fraunces"; --b:"DM Sans"; --dw:700; --ls:-.025em; --sc:.95; --lh:1; }
+    .o5 { --d:"Big Shoulders Display"; --b:"Barlow"; --dw:900; --tt:uppercase; --ls:0; --sc:1.2; --lh:.92; }
+    .o6 { --d:"Dela Gothic One"; --b:"Outfit"; --dw:400; --ls:-.01em; --sc:.74; --lh:1.1; }
+    .o7 { --d:"Space Grotesk"; --b:"Work Sans"; --dw:700; --ls:-.045em; --sc:.98; }
+    .o8 { --d:"Instrument Serif"; --b:"DM Sans"; --dw:400; --ls:-.02em; --sc:1.22; --lh:.95; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="intro">
+      <h1>Stay Tilted: font options</h1>
+      <p>Each card uses your real copy on the real colours: a dark section on top, a light section below. Open this file with Live Server (or straight from the folder) and scroll through.</p>
+      <p>Tell me a letter (or a mix, like “headline from C, body from G”) and I’ll swap it into <code>styles.css</code> and <code>index.html</code>. This file is only a preview, so delete it afterwards.</p>
+    </header>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <script>
+    var options = [
+      { cls: 'o1', name: 'A · Current', fonts: 'Bricolage Grotesque + DM Sans', vibe: 'Quirky, condensed, friendly', d: 'Bricolage Grotesque', b: 'DM Sans', fam: 'family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=DM+Sans:wght@400;500;600;700' },
+      { cls: 'o2', name: 'B', fonts: 'Syne + Manrope', vibe: 'Artsy, a bit off-kilter, very “creative studio”', d: 'Syne', b: 'Manrope', fam: 'family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700' },
+      { cls: 'o3', name: 'C', fonts: 'Unbounded + Inter', vibe: 'Wide, bold, anime-title-card energy', d: 'Unbounded', b: 'Inter', fam: 'family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600;700' },
+      { cls: 'o4', name: 'D', fonts: 'Fraunces + DM Sans', vibe: 'Soft, editorial serif; warm and a little theatrical', d: 'Fraunces', b: 'DM Sans', fam: 'family=Fraunces:opsz,wght@9..144,600..800&family=DM+Sans:wght@400;500;600;700' },
+      { cls: 'o5', name: 'E', fonts: 'Big Shoulders Display + Barlow', vibe: 'Tall, uppercase, cinematic movie-poster', d: 'Big Shoulders Display', b: 'Barlow', fam: 'family=Big+Shoulders+Display:wght@700;800;900&family=Barlow:wght@400;500;600;700' },
+      { cls: 'o6', name: 'F', fonts: 'Dela Gothic One + Outfit', vibe: 'Chunky, manga-cover impact, loud and fun', d: 'Dela Gothic One', b: 'Outfit', fam: 'family=Dela+Gothic+One&family=Outfit:wght@400;500;600;700' },
+      { cls: 'o7', name: 'G', fonts: 'Space Grotesk + Work Sans', vibe: 'Clean, techy-quirky; the safe modern pick', d: 'Space Grotesk', b: 'Work Sans', fam: 'family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600;700' },
+      { cls: 'o8', name: 'H', fonts: 'Instrument Serif + DM Sans', vibe: 'Elegant and fashion-y; big, light serif headlines', d: 'Instrument Serif', b: 'DM Sans', fam: 'family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700' }
+    ];
+    var grid = document.getElementById('grid');
+    options.forEach(function (o) {
+      var snippet = '--display: "' + o.d + '", system-ui, sans-serif; --body: "' + o.b + '", system-ui, sans-serif;';
+      var el = document.createElement('article');
+      el.className = 'opt ' + o.cls;
+      el.innerHTML =
+        '<div class="opt-head"><b>' + o.name + ' · ' + o.fonts + '</b><span>' + o.vibe + '</span></div>' +
+        '<div class="dark">' +
+          '<h2>For the ones who show up as themselves.</h2>' +
+          '<p>Cosplay, portraits, events &amp; independent brands. No stiff poses. No borrowed personality. Just you, with the good bits turned up.</p>' +
+          '<div class="row"><span class="pill">Plan a shoot ↗</span><span class="nav-sample"><span>Gallery</span><span>Studio</span><span>Packages</span><span>About</span></span></div>' +
+        '</div>' +
+        '<div class="light">' +
+          '<h3>Pick a package.</h3>' +
+          '<p class="price">R1500</p>' +
+          '<ul><li>10 edited photos</li><li>1–3 hr · 1–3 people</li><li>Studio space in current theme</li></ul>' +
+          '<div class="q">I feel awkward in front of a camera. Now what?</div>' +
+        '</div>' +
+        '<div class="code"><code>' + snippet.replace(/</g, '&lt;') + '</code><button type="button">Copy</button></div>';
+      el.querySelector('button').addEventListener('click', function (e) {
+        var btn = e.currentTarget;
+        navigator.clipboard.writeText(snippet).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1400); });
+      });
+      grid.appendChild(el);
+    });
+  </script>
+</body>
+</html>
