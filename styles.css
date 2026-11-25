@@ -7,7 +7,7 @@
   --paper: #f3efe7;
   --red: #c03d35;
   --ink: #070605;
-  --lime: #d3ef75;
+  --lime: #f0c84b;
   --pink: #f1a4c5;
   --mint: #a4d5ad;
   --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
@@ -461,6 +461,7 @@ main { overflow-x: clip; }
 .social-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
 .social-card { position: relative; display: flex; min-height: 280px; flex-direction: column; align-items: flex-start; gap: .8rem; padding: clamp(1.5rem, 3vw, 2.4rem); color: var(--cream); background: rgba(249,249,249,.08); text-decoration: none; transition: background-color .25s, color .25s; }
 .social-icon { width: 44px; height: 44px; margin-bottom: auto; color: var(--lime); transition: color .25s; }
+.broadcast-icon { display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 1rem; font-weight: 800; line-height: 1; }
 .social-card h3 { font-size: clamp(2.2rem, 3.4vw, 3.2rem); font-weight: 800; }
 .social-card p { max-width: 30ch; color: rgba(249,249,249,.84); font-size: 1rem; line-height: 1.5; transition: color .25s; }
 .social-go { margin-top: .4rem; color: var(--lime); font-size: .95rem; font-weight: 700; transition: color .25s; }

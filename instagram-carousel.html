@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rei Dot | Stay Tilted project carousel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Slides are built at the real Instagram 4:5 size (1080x1350). --preview only shrinks them on screen.
+     To export: set --preview to 1, then in dev tools right-click each .slide > Capture node screenshot. */
+  :root { --preview: .45; --bg:#2a2a2a; --panel:#3a3a3a; --fade:#343434; --blue:#00aeef; --text:#fff; --soft:#c9cdd2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px; background: #111; color: #fff; font-family: "Poppins", sans-serif; }
+  .hint { margin: 0 0 24px; color: #bbb; font-size: 15px; }
+  .row { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 24px; scroll-snap-type: x mandatory; }
+  .slide { position: relative; overflow: hidden; zoom: var(--preview); flex: none; width: 1080px; height: 1350px; padding: 88px; display: flex; flex-direction: column; justify-content: space-between; background: var(--bg); color: var(--text); scroll-snap-align: start; }
+  .slide > * { position: relative; }
+  .ghost { position: absolute !important; width: 1100px; height: 1100px; right: -380px; top: 330px; color: var(--fade); }
+  .top { display: flex; justify-content: space-between; align-items: center; font-size: 30px; font-weight: 600; }
+  .brand { display: flex; align-items: center; gap: 18px; font-size: 38px; font-weight: 700; }
+  .brand svg { width: 60px; height: 60px; color: var(--blue); }
+  .brand b { color: var(--blue); }
+  h1, h2 { margin: 0; font-weight: 700; line-height: 1.02; letter-spacing: -.02em; }
+  h1 { font-size: 120px; }
+  h2 { font-size: 120px; }
+  .blue { color: var(--blue); }
+  .sub { margin: 0; font-size: 36px; line-height: 1.45; color: var(--soft); }
+  .photo { object-fit: cover; display: block; }
+
+  .s1 .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+  .s1 .sub { max-width: 560px; }
+  .frame { position: relative; height: 440px; margin-right: 24px; }
+  .frame::before { content: ""; position: absolute; inset: 0; transform: translate(24px, 24px); background: var(--blue); }
+  .frame .photo { position: relative; width: 100%; height: 100%; object-position: center 20%; }
+  .chip { position: absolute; left: 0; bottom: 0; padding: 14px 28px; background: #fff; color: var(--bg); font-size: 26px; font-weight: 600; }
+  .swipe { display: flex; align-items: center; gap: 16px; margin-top: 28px; font-size: 36px; font-weight: 600; color: var(--blue); }
+
+  .s2 { background: #f3f4f6; color: var(--bg); }
+  .mock { transform: rotate(-1.6deg); background: #00251e; border-radius: 24px; overflow: hidden; color: #f9f9f9; box-shadow: 0 30px 60px rgba(42,42,42,.28); }
+  .bar { height: 56px; background: #00463e; display: flex; align-items: center; gap: 12px; padding: 0 24px; }
+  .bar i { width: 16px; height: 16px; border-radius: 50%; }
+  .mock-body { padding: 40px 52px 52px; }
+  .nav { display: flex; justify-content: space-between; font-size: 26px; font-weight: 500; color: #d9e3df; }
+  .hero { display: grid; grid-template-columns: 1fr 300px; gap: 36px; align-items: center; margin-top: 32px; }
+  .hero h3 { margin: 0 0 32px; font-size: 62px; line-height: 1.02; font-weight: 700; letter-spacing: -.02em; }
+  .hero h3 span { color: #d3ef75; }
+  .hero .photo { width: 300px; height: 375px; transform: rotate(2.2deg); }
+  .btn { display: inline-block; background: #c03d35; color: #fff; font-size: 28px; font-weight: 600; padding: 18px 38px; border-radius: 999px; }
+
+  .list { margin: 0; padding: 0; list-style: none; display: grid; gap: 20px; }
+  .list li { display: flex; align-items: center; gap: 28px; background: var(--panel); padding: 30px 36px; font-size: 38px; font-weight: 500; line-height: 1.3; }
+  .list i { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--blue); }
+
+  .code { background: #1e1e1e; padding: 44px 52px; font: 500 42px/1.6 Consolas, "Courier New", monospace; color: #fff; }
+  .code .k { color: var(--blue); }
+  .code .v { color: #a4d5ad; }
+
+  .svc { display: grid; gap: 8px; font-size: 64px; font-weight: 700; color: var(--blue); line-height: 1.15; }
+  .contact { display: grid; gap: 14px; font-size: 38px; font-weight: 500; }
+  .tag { margin: 36px 0 0; font-size: 34px; color: var(--soft); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="rd" viewBox="0 0 1000 1000"><path fill="currentColor" fill-rule="evenodd" d="M280 0H470A508 499 0 0 1 470 998H280Z M280 222H455C560 222 636 300 636 400C636 475 590 540 525 571L628 778H280Z M20 222H280V778H20Z"/></symbol>
+</svg>
+<p class="hint">Rei Dot Instagram carousel, 5 slides at 1080&times;1350. Scroll sideways. Photos come from <code>assets/photos</code>: swap any <code>src</code> to change them.</p>
+<div class="row">
+
+  <section class="slide s1">
+    <svg class="ghost" aria-hidden="true"><use href="#rd"/></svg>
+    <div class="top"><span class="brand"><svg aria-hidden="true"><use href="#rd"/></svg><span>Rei <b>Dot</b></span></span><span class="blue">01 / 05</span></div>
+    <div>
+      <p class="sub" style="margin-bottom:28px;color:var(--blue);font-weight:600">New project</p>
+      <h1>A new website for <span class="blue">Stay Tilted.</span></h1>
+    </div>
+    <div class="frame">
+      <img class="photo" src="assets/photos/meet%20the%20photographer%20in%20cosplay.png" alt="The Stay Tilted photographer in cosplay">
+      <span class="chip">Stay Tilted · Springs, Gauteng</span>
+    </div>
+    <div class="foot">
+      <p class="sub">Cosplay, portrait and event photography. Designed and built by Rei Dot.</p>
+      <span class="swipe" style="margin:0">Swipe <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+    </div>
+  </section>
+
+  <section class="slide s2">
+    <div class="top"><span class="brand"><svg aria-hidden="true"><use href="#rd"/></svg><span>Rei <b>Dot</b></span></span><span>02 / 05</span></div>
+    <h2>Bold, warm and a little tilted.</h2>
+    <div class="mock">
+      <div class="bar"><i style="background:#c03d35"></i><i style="background:#d3ef75"></i><i style="background:#a4d5ad"></i></div>
+      <div class="mock-body">
+        <div class="nav"><span>Stay Tilted</span><span>Gallery · Studio · Packages</span></div>
+        <div class="hero">
+          <div>
+            <h3>For the ones who <span>show up</span> as themselves.</h3>
+            <span class="btn">Plan a shoot ↗</span>
+          </div>
+          <img class="photo" src="assets/photos/anime-manga/anime%20cosplay%20shoot%20in%20my%20studio.png" alt="Anime cosplay portrait">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s3">
+    <div class="top"><span class="brand"><svg aria-hidden="true"><use href="#rd"/></svg><span>Rei <b>Dot</b></span></span><span class="blue">03 / 05</span></div>
+    <h2>What’s <span class="blue">inside.</span></h2>
+    <ul class="list">
+      <li><i></i>Photo gallery with filters and a full-screen viewer</li>
+      <li><i></i>Packages and pricing, clear at a glance</li>
+      <li><i></i>A studio set that updates from one small file</li>
+      <li><i></i>Enquiry form that opens email or WhatsApp</li>
+      <li><i></i>Mobile friendly and search ready</li>
+    </ul>
+  </section>
+
+  <section class="slide s4">
+    <svg class="ghost" aria-hidden="true" style="top:auto;bottom:-420px"><use href="#rd"/></svg>
+    <div class="top"><span class="brand"><svg aria-hidden="true"><use href="#rd"/></svg><span>Rei <b>Dot</b></span></span><span class="blue">04 / 05</span></div>
+    <h2>Easy for the owner to <span class="blue">update.</span></h2>
+    <div class="code">{<br>&nbsp;&nbsp;<span class="k">"name"</span>: <span class="v">"Cloudy Dreams"</span>,<br>&nbsp;&nbsp;<span class="k">"until"</span>: <span class="v">"Now on set"</span><br>}</div>
+    <p class="sub">Change the current studio theme by editing one small file. No developer needed.</p>
+  </section>
+
+  <section class="slide s5">
+    <svg class="ghost" aria-hidden="true"><use href="#rd"/></svg>
+    <div class="top"><span class="brand"><svg aria-hidden="true"><use href="#rd"/></svg><span>Rei <b>Dot</b></span></span><span class="blue">05 / 05</span></div>
+    <h2>Need a website, app or <span class="blue">game?</span></h2>
+    <div class="svc"><span>Games</span><span>Apps</span><span>Websites</span></div>
+    <div>
+      <div class="contact"><span>+27 71 992 0493</span><span>reidotstudio@gmail.com</span><span>Pretoria, Gauteng</span></div>
+      <p class="tag">Every Pixel Has Purpose.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

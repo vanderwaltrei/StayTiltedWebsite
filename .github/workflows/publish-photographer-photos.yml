@@ -33,14 +33,14 @@ jobs:
 
       - name: Check out the website
         if: steps.publishing-credentials.outputs.ready == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           token: ${{ secrets.SITE_PUBLISH_TOKEN }}
 
       - name: Check out the private photo library
         if: steps.publishing-credentials.outputs.ready == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: vanderwaltrei/StayTiltedPhotoLibrary
           ref: main
@@ -94,8 +94,10 @@ jobs:
               relative = image.relative_to(source)
               if len(relative.parts) > 2:
                   raise SystemExit(f"Use only one category folder inside photos/: {image}")
-              if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 _-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
+              if not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9 _-]*\.(avif|webp|jpe?g|png|gif|bmp)", image.name, re.IGNORECASE):
                   raise SystemExit(f"Use letters, numbers, spaces, hyphens, or underscores in image names: {image.name}")
+              if relative.parts[0].casefold() == "current theme":
+                  continue
               if len(relative.parts) == 1:
                   category = "other"
                   category_label = "Other"
