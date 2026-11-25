@@ -1,5 +1,11 @@
 [
   {
+    "file": "_MG_9167.jpg",
+    "caption": "MG 9167",
+    "category": "other",
+    "categoryLabel": "Other"
+  },
+  {
     "file": "anime-manga/anime cosplay shoot in my studio.png",
     "caption": "A quiet moment between worlds",
     "category": "anime-manga",
@@ -22,6 +28,12 @@
     "caption": "A voice rising through the lights",
     "category": "music-events",
     "categoryLabel": "Music Events"
+  },
+  {
+    "file": "portraits/_MG_9049.jpg",
+    "caption": "MG 9049",
+    "category": "portraits",
+    "categoryLabel": "Portraits"
   },
   {
     "file": "Studio table.png",
